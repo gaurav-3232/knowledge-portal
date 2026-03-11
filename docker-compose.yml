@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: kp_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-knowledge_portal}
+      MYSQL_USER: ${MYSQL_USER:-kp_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-kp_password}
+    ports:
+      - "3307:3306"
+    volumes:
+      - kp_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: kp_backend
+    restart: on-failure
+    environment:
+      FLASK_ENV: production
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: ${MYSQL_DATABASE:-knowledge_portal}
+      DB_USER: ${MYSQL_USER:-kp_user}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-kp_password}
+      JWT_SECRET: ${JWT_SECRET:-supersecretkey-change-in-production}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5001:5000"
+
+  frontend:
+    build: ./frontend
+    container_name: kp_frontend
+    environment:
+      VITE_API_URL: http://localhost:5001
+    depends_on:
+      - backend
+    ports:
+      - "5174:5173"
+
+volumes:
+  kp_mysql_data:
