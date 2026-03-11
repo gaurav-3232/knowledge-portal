@@ -15,7 +15,7 @@ docker compose up --build
 
 | Service  | URL                              |
 |----------|----------------------------------|
-| Frontend | http://localhost:5173             |
+| Frontend | http://localhost:5174             |
 | Backend  | http://localhost:5000/api/health  |
 | MySQL    | localhost:3307 (host-side)        |
 
