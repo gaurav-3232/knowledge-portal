@@ -16,7 +16,7 @@ docker compose up --build
 | Service  | URL                              |
 |----------|----------------------------------|
 | Frontend | http://localhost:5174             |
-| Backend  | http://localhost:5000/api/health  |
+| Backend  | http://localhost:5001/api/health  |
 | MySQL    | localhost:3307 (host-side)        |
 
 Default login: **admin / admin123** (seeded automatically on first run).
@@ -40,18 +40,18 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Runs at http://localhost:5000
+Runs at http://localhost:5001
 
 ### Frontend
 
 ```bash
 cd frontend
-cp .env.example .env          # VITE_API_URL=http://localhost:5000
+cp .env.example .env          # VITE_API_URL=http://localhost:5001
 npm install
 npm run dev
 ```
 
-Runs at http://localhost:5173
+Runs at http://localhost:5174
 
 ---
 
